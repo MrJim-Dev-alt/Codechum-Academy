@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCAMPO: Flexbox 4</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 300px;
+            height: 300px;
+        }
+
+        .blue {
+            background-color: #4f81bd;
+            width: 100%;
+            height: 33.33%;
+        }
+
+        .bottom-row {
+            display: flex;
+            width: 100%;
+            height: 66.67%;
+        }
+
+        .green {
+            background-color: #205867;
+            width: 60%;
+            height: 100%;
+        }
+
+        .yellow {
+            background-color: #ffff00;
+            width: 40%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="blue"></div>
+        <div class="bottom-row">
+            <div class="green"></div>
+            <div class="yellow"></div>
+        </div>
+    </div>
+</body>
+
+</html>

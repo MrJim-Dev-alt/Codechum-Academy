@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCAMPO: Flexbox 5</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 600px;
+            height: 400px;
+            gap: 10px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .top-row {
+            height: 30%;
+        }
+
+        .middle-row {
+            height: 40%;
+        }
+
+        .bottom-row {
+            height: 30%;
+        }
+
+        .block {
+            flex: 1;
+            border: 2px solid #395e89;
+        }
+
+        .blue {
+            background-color: #4f81bd;
+        }
+
+        .green {
+            background-color: #205867;
+        }
+
+        .yellow {
+            background-color: #ffff00;
+        }
+
+        .red {
+            background-color: #ff0000;
+        }
+
+        .light-blue {
+            background-color: #93b3d7;
+        }
+
+        .peach {
+            background-color: #fabf8e;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row top-row">
+            <div class="block blue"></div>
+            <div class="block green"></div>
+            <div class="block yellow"></div>
+        </div>
+        <div class="row middle-row">
+            <div class="block red"></div>
+        </div>
+        <div class="row bottom-row">
+            <div class="block light-blue"></div>
+            <div class="block peach"></div>
+        </div>
+    </div>
+</body>
+
+</html>
