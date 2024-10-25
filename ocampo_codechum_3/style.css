@@ -101,6 +101,7 @@ section {
 .second-section {
     display: grid;
     justify-content: space-around;
+
 }
 
 .second-section h2,
@@ -348,7 +349,7 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 20px 0;
     flex-direction: column;
     gap: 15px;
 }
@@ -362,11 +363,9 @@ section {
     text-decoration: none;
     box-shadow: 0 4px 6px rgba(92, 101, 255, 0.2);
     transition: all 0.3s ease;
-    width: 220px;
+    width: 240px;
     text-align: center;
     padding: 5px;
-
-
 }
 
 .seventh-section {
@@ -512,8 +511,207 @@ footer {
 
 /* Media Queries */
 
-@media (max-width: 1024px) {}
 
-@media (max-width: 768px) {}
+@media (max-width: 1024px) {
+    section {
+        padding: 40px 60px;
+    }
 
-@media (max-width: 480px) {}
+    br {
+        display: none;
+    }
+
+    .first-section,
+    .second-section,
+    .third-section,
+    .fourth-section,
+    .fifth-section,
+    .sixth-section,
+    .seventh-section {
+        padding: 60px 60px;
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .second-section .content,
+    .third-section .content,
+    .fourth-section .content,
+    .fifth-section .content,
+    .sixth-section .content,
+    .seventh-section .content {
+        order: 1;
+    }
+
+    .image-container {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .container {
+        /* display: flex;
+        flex-direction: column; */
+        gap: 10px;
+    }
+
+    .second-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .second-section .checklist-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding-top: 0;
+    }
+
+    .checklist-item {
+        display: flex;
+        gap: 10px;
+        text-align: left;
+    }
+
+
+
+    .seventh-section .container {
+        flex-direction: column;
+    }
+
+    .third-section .container,
+    .fourth-section .container,
+    .fifth-section .container,
+    .sixth-section .container {
+        grid-template-columns: 1fr;
+    }
+
+    .fourth-section .container {
+        flex-direction: column;
+    }
+
+    .seventh-section {
+        gap: 50px;
+        padding-bottom: 50px;
+    }
+
+    .form-group label {
+        text-align: left;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+
+    .coming-alive-container {
+        width: 100%;
+    }
+
+    .content h1 {
+        font-size: 32px;
+    }
+
+    .content p {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 24px !important;
+    }
+
+    h3 {
+        font-size: 20px !important;
+    }
+
+    .coming-alive-bubble {
+        width: 80%;
+        max-width: 300px;
+    }
+
+    .coming-alive-bubble h2 {
+        font-size: 24px;
+    }
+
+    .coming-alive-bubble p {
+        font-size: 11px;
+    }
+
+    .seventh-section h3 {
+        font-size: 18px;
+    }
+
+    .second-section .container {
+        grid-template-columns: 1fr;
+    }
+
+
+    .checklist-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin: 0 auto;
+    }
+
+    .checklist-item {
+        grid-template-columns: 0.1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    section {
+        padding: 20px !important;
+    }
+
+    .first-section {
+        padding: 40px 20px;
+    }
+
+    .second-section {
+        padding-bottom: 100px !important;
+        gap: 20px;
+    }
+
+    .content h1 {
+        font-size: 28px;
+    }
+
+    .content p {
+        font-size: 18px;
+    }
+
+    h2 {
+        font-size: 20px !important;
+    }
+
+    h3 {
+        font-size: 18px !important;
+    }
+
+    .button {
+        font-size: 16px;
+        width: 180px;
+    }
+
+    .coming-alive-container {
+        max-width: 280px;
+    }
+
+    .coming-alive-bubble {
+        padding-top: 40px;
+    }
+
+    .seventh-section h3 {
+        font-size: 16px;
+    }
+
+    .form-group label {
+        font-size: 15px;
+    }
+
+    .info-container h4 {
+        font-size: 18px;
+    }
+
+    .checklist-item {
+        font-size: 14px;
+    }
+}
