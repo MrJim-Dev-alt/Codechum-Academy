@@ -510,8 +510,6 @@ footer {
 }
 
 /* Media Queries */
-
-
 @media (max-width: 1024px) {
     section {
         padding: 40px 60px;
@@ -569,8 +567,6 @@ footer {
         gap: 10px;
         text-align: left;
     }
-
-
 
     .seventh-section .container {
         flex-direction: column;
