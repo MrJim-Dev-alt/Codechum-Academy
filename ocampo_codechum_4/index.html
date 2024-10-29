@@ -17,18 +17,18 @@
 
     <style>
         .slick-prev {
-            left: 50px;
+            left: 25px;
             z-index: 100;
             top: 50%;
             filter: contrast(100%) brightness(0);
-            transform: scale(1.8);
+            transform: scale(1.5);
         }
 
         .slick-next {
-            right: 80px;
+            right: 25px;
             z-index: 100;
             filter: contrast(100%) brightness(0);
-            transform: scale(1.8);
+            transform: scale(1.5);
         }
 
         .slick-dots {
@@ -38,6 +38,14 @@
         .slick-dots li {
             width: 5px;
             height: 5px;
+        }
+
+        @media screen and (max-width: 768px) {
+
+            .slick-prev,
+            .slick-next {
+                transform: scale(1);
+            }
         }
     </style>
 </head>
@@ -126,7 +134,6 @@
                 <div class="text-clearance">
                     <p>CLEARANCE UP TO</p>
                 </div>
-
                 <div class="text-70off">
                     <p>70% OFF</p>
                 </div>
