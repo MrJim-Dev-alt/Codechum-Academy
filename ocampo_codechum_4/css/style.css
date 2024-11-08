@@ -50,10 +50,6 @@ body {
     min-width: 1020px;
 }
 
-section {
-    /* width: 100%; */
-    /* padding: 60px 0px; */
-}
 
 a {
     text-decoration: none;
@@ -62,6 +58,10 @@ a {
 
 a:hover {
     color: #95d830;
+}
+
+ul {
+    list-style: none;
 }
 
 #hero {
@@ -801,28 +801,6 @@ input:focus {
 }
 
 @media screen and (max-width: 768px) {
-    /* .text-christmas {
-        width: 100%;
-        font-size: 80px;
-        line-height: 80px;
-    }
-
-    .text-sale {
-        width: 100%;
-        font-size: 120px;
-        line-height: 120px;
-    }
-
-    .text-clearance {
-        width: 100%;
-        font-size: 40px;
-    }
-
-    .text-70off {
-        width: 100%;
-        font-size: 80px;
-        line-height: 80px;
-    } */
 
     .section-container {
         padding: 0 10px;
@@ -944,5 +922,37 @@ input:focus {
 
     .social-list {
         transform: scale(0.8);
+    }
+}
+
+.slick-prev {
+    left: 25px;
+    z-index: 100;
+    top: 50%;
+    filter: contrast(100%) brightness(0);
+    transform: scale(1.5);
+}
+
+.slick-next {
+    right: 25px;
+    z-index: 100;
+    filter: contrast(100%) brightness(0);
+    transform: scale(1.5);
+}
+
+.slick-dots {
+    bottom: 20px;
+}
+
+.slick-dots li {
+    width: 5px;
+    height: 5px;
+}
+
+@media screen and (max-width: 768px) {
+
+    .slick-prev,
+    .slick-next {
+        transform: scale(1);
     }
 }

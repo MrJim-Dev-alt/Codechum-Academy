@@ -15,39 +15,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css">
 
-    <style>
-        .slick-prev {
-            left: 25px;
-            z-index: 100;
-            top: 50%;
-            filter: contrast(100%) brightness(0);
-            transform: scale(1.5);
-        }
-
-        .slick-next {
-            right: 25px;
-            z-index: 100;
-            filter: contrast(100%) brightness(0);
-            transform: scale(1.5);
-        }
-
-        .slick-dots {
-            bottom: 20px;
-        }
-
-        .slick-dots li {
-            width: 5px;
-            height: 5px;
-        }
-
-        @media screen and (max-width: 768px) {
-
-            .slick-prev,
-            .slick-next {
-                transform: scale(1);
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -63,61 +30,56 @@
         </div>
 
         <div class="side_menu">
-            <div class="side_menu_content">
-                <div class="side_menu_item">
+            <ul class="side_menu_content">
+                <li class="side_menu_item">
                     <a href="#hero">
                         <p>Home</p>
                         <img src="images/menu_item_normal.png" alt="menu item normal">
                     </a>
-                </div>
-                <div class="side_menu_item">
+                </li>
+                <li class="side_menu_item">
                     <a href="#hot-offers">
                         <p>Hot Offer</p>
                         <img src="images/menu_item_normal.png" alt="menu item normal">
                     </a>
-                </div>
-                <div class="side_menu_item">
+                </li>
+                <li class="side_menu_item">
                     <a href="#about">
                         <p>About Offer</p>
                         <img src="images/menu_item_normal.png" alt="menu item normal">
                     </a>
-                </div>
-                <div class="side_menu_item">
+                </li>
+                <li class="side_menu_item">
                     <a href="#product1">
                         <p>Product #1</p>
                         <img src="images/menu_item_normal.png" alt="menu item normal">
                     </a>
-                </div>
-                <div class="side_menu_item">
+                </li>
+                <li class="side_menu_item">
                     <a href="#product2">
                         <p>Product #2</p>
                         <img src="images/menu_item_normal.png" alt="menu item normal">
                     </a>
-                </div>
-                <div class="side_menu_item">
+                </li>
+                <li class="side_menu_item">
                     <a href="#product3">
                         <p>Product #3</p>
                         <img src="images/menu_item_normal.png" alt="menu item normal">
                     </a>
-                </div>
-                <div class="side_menu_item">
+                </li>
+                <li class="side_menu_item">
                     <a href="#subscribe">
                         <p>Subscribe</p>
                         <img src="images/menu_item_normal.png" alt="menu item normal">
                     </a>
-                </div>
-                <div class="side_menu_item">
+                </li>
+                <li class="side_menu_item">
                     <a href="#contacts">
                         <p>Contacts</p>
                         <img src="images/menu_item_normal.png" alt="menu item normal">
                     </a>
-                </div>
-
-
-
-
-            </div>
-
+                </li>
+            </ul>
         </div>
 
         <section id="hero">
@@ -544,54 +506,58 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script type="text/javascript">
+        // Initialize Slick Carousel for product image galleries
         $(document).ready(function () {
             $('.carousel').slick({
-                dots: true,
-                infinite: true,
-                speed: 300,
-                slidesToShow: 1,
-                autoplay: true,
-                autoplaySpeed: 3000,
-                adaptiveHeight: true
+                dots: true,          // Show navigation dots
+                infinite: true,      // Enable infinite scrolling
+                speed: 300,          // Transition speed in milliseconds
+                slidesToShow: 1,     // Number of slides to show at once
+                autoplay: true,      // Enable automatic sliding
+                autoplaySpeed: 3000, // Time between slides in milliseconds
+                adaptiveHeight: true // Adjust height based on slide content
             });
         });
 
+        // Track positions of tree backgrounds for parallax effect
         let treesPositions = new Array(4).fill(0);
         let lastScrollTop = 0;
 
+        // Handle scroll events for various parallax and animation effects
         $(window).scroll(function () {
             let scrollPosition = $(window).scrollTop();
             let windowHeight = $(window).height();
 
-            // Snow pattern parallax
+            // Create parallax effect for snow patterns
+            // Pattern 1 moves slower than Pattern 2 for depth effect
             let pattern1Position = scrollPosition * 0.3 % windowHeight;
             let pattern2Position = scrollPosition * 0.5 % windowHeight;
 
             $('#snow_pattern').css('transform', `translateY(${pattern1Position}px)`);
             $('#snow_pattern2').css('transform', `translateY(${pattern2Position}px)`);
 
-            // Deer diagonal movement
+            // Animate deer moving diagonally away from center as user scrolls
             let moveAmount = scrollPosition;
-
             $('#left_deer').css('transform', `translate(-${moveAmount}px, -${moveAmount * 2}px)`);
             $('#right_deer').css('transform', `translate(${moveAmount}px, -${moveAmount * 2}px)`);
 
-            // Make deer invisible when they move too far
+            // Hide deer when they move too far off screen
             if (moveAmount > windowHeight) {
                 $('#left_deer, #right_deer').css('visibility', 'hidden');
             } else {
                 $('#left_deer, #right_deer').css('visibility', 'visible');
             }
 
-            // Trees movement
+            // Create infinite scrolling effect for tree backgrounds
             let scrollDelta = scrollPosition - lastScrollTop;
 
             $('.trees-hr').each(function (index) {
+                // Alternate direction for each tree layer
                 let moveLeft = index % 2 === 0;
                 let moveAmount = scrollDelta * 0.3;
 
+                // Update position and wrap around if needed
                 treesPositions[index] += moveLeft ? -moveAmount : moveAmount;
-
                 if (treesPositions[index] < -200) treesPositions[index] += 400;
                 if (treesPositions[index] > 200) treesPositions[index] -= 400;
 
@@ -601,13 +567,14 @@
             lastScrollTop = scrollPosition;
         });
 
+        // Smooth scroll to section when clicking navigation links
         $('a[href^="#"]').on('click', function (e) {
             e.preventDefault();
             let target = $(this).attr('href');
             $('html, body').animate({ scrollTop: $(target).offset().top }, 500);
         });
 
-        // Add scroll spy functionality
+        // Highlight current section in side menu (scroll spy)
         $(window).scroll(function () {
             let scrollPosition = $(window).scrollTop();
 
@@ -616,14 +583,13 @@
                 let bottom = top + $(this).outerHeight();
                 let id = $(this).attr('id');
 
+                // Scale down menu icon for current section
                 if (scrollPosition >= top && scrollPosition < bottom) {
                     $('.side_menu_item img').css('transform', 'scale(1)');
                     $(`.side_menu_item a[href="#${id}"] img`).css('transform', 'scale(0.5)');
                 }
             });
         });
-
-
     </script>
 </body>
 
