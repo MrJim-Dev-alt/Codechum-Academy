@@ -544,8 +544,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script type="text/javascript">
-
-
         $(document).ready(function () {
             $('.carousel').slick({
                 dots: true,
@@ -607,6 +605,22 @@
             e.preventDefault();
             let target = $(this).attr('href');
             $('html, body').animate({ scrollTop: $(target).offset().top }, 500);
+        });
+
+        // Add scroll spy functionality
+        $(window).scroll(function () {
+            let scrollPosition = $(window).scrollTop();
+
+            $('section').each(function () {
+                let top = $(this).offset().top - 200;
+                let bottom = top + $(this).outerHeight();
+                let id = $(this).attr('id');
+
+                if (scrollPosition >= top && scrollPosition < bottom) {
+                    $('.side_menu_item img').css('transform', 'scale(1)');
+                    $(`.side_menu_item a[href="#${id}"] img`).css('transform', 'scale(0.5)');
+                }
+            });
         });
 
 
