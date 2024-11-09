@@ -6,24 +6,16 @@ let currentSearch = '';
 
 // Helper Functions
 
-/**
- * Formats a number as currency
- * @param {number} amount - The amount to format
- * @returns {string} The formatted currency string
- */
+//Formats a number as currency
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 2
-    }).format(amount).replace('$', '$ ');
+    }).format(amount).replace('$', '$');
 };
 
-/**
- * Formats a date string into a human-readable format
- * @param {string} dateString - The date string to format
- * @returns {string} The formatted date string
- */
+// Formats a date string into a human-readable format
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', { 
@@ -34,10 +26,7 @@ const formatDate = (dateString) => {
     }).format(date);
 };
 
-/**
- * Updates the total income, expenses, and balance display
- * @param {Array} filteredTransactions - The filtered transactions to calculate totals from
- */
+// Updates the total income, expenses, and balance display
 const updateTotals = (filteredTransactions) => {
     const income = filteredTransactions
         .filter(t => t.type === 'income')
@@ -54,11 +43,7 @@ const updateTotals = (filteredTransactions) => {
     document.getElementById('total-balance').textContent = formatCurrency(total);
 };
 
-/**
- * Groups transactions by date
- * @param {Array} filteredTransactions - The filtered transactions to group
- * @returns {Object} An object with dates as keys and arrays of transactions as values
- */
+// Groups transactions by date
 const groupTransactionsByDate = (filteredTransactions) => {
     return filteredTransactions.reduce((groups, transaction) => {
         const date = transaction.date;
@@ -70,10 +55,7 @@ const groupTransactionsByDate = (filteredTransactions) => {
     }, {});
 };
 
-/**
- * Filters transactions based on current month, filter, and search term
- * @returns {Array} Filtered transactions
- */
+// Filters transactions based on current month, filter, and search term
 const getFilteredTransactions = () => {
     return transactions.filter(transaction => {
         const transactionDate = new Date(transaction.date);
@@ -88,9 +70,7 @@ const getFilteredTransactions = () => {
     });
 };
 
-/**
- * Renders the transactions list in the UI
- */
+// Renders the transactions list in the UI
 const renderTransactions = () => {
     const transactionsList = document.getElementById('transactions-list');
     transactionsList.innerHTML = '';
@@ -150,9 +130,7 @@ const renderTransactions = () => {
     });
 };
 
-/**
- * Updates the month display in the header
- */
+// Updates the month display in the header
 const updateMonthDisplay = () => {
     const monthYearString = new Intl.DateTimeFormat('en-US', { 
         month: 'long', 
@@ -161,9 +139,7 @@ const updateMonthDisplay = () => {
     document.getElementById('current-month').textContent = monthYearString;
 };
 
-/**
- * Populates the category dropdown based on the selected transaction type
- */
+// Populates the category dropdown based on the selected transaction type
 const populateCategoryDropdown = () => {
     const typeSelect = document.getElementById('type');
     const categorySelect = document.getElementById('category');
@@ -178,18 +154,14 @@ const populateCategoryDropdown = () => {
     });
 };
 
-/**
- * Shows the modal
- */
+// Shows the modal
 const showModal = () => {
     const modal = document.getElementById('transaction-modal');
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('show'), 10);
 };
 
-/**
- * Hides the modal
- */
+// Hides the modal
 const hideModal = () => {
     const modal = document.getElementById('transaction-modal');
     modal.classList.remove('show');
@@ -268,6 +240,8 @@ updateMonthDisplay();
 populateCategoryDropdown();
 renderTransactions();
 
+
+// For responsive navigation menu
 document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
