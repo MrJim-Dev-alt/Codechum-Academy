@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="nav-content">
+            <a href="/" class="logo">Finance Manager</a>
+            <ul class="nav-links">
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/reports">Reports</a></li>
+                <li><a href="/settings">Settings</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Header Section -->
+        <section class="month-navigation">
+            <button class="nav-button" id="prev-month">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <h1 id="current-month">Nov 2024</h1>
+            <button class="nav-button" id="next-month">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="filters">
+            <nav class="tabs">
+                <button class="active" data-filter="all">All</button>
+                <button data-filter="income">Income</button>
+                <button data-filter="expense">Expenses</button>
+            </nav>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search transactions...">
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="summary">
+            <div class="summary-item">
+                <h2>Income</h2>
+                <p class="income" id="total-income">$ 0.00</p>
+            </div>
+            <div class="summary-item">
+                <h2>Expenses</h2>
+                <p class="expense" id="total-expenses">$ 0.00</p>
+            </div>
+            <div class="summary-item">
+                <h2>Total</h2>
+                <p id="total-balance">$ 0.00</p>
+            </div>
+        </section>
+
+        <!-- Transactions Section -->
+        <section class="transactions">
+            <article id="transactions-list"></article>
+        </section>
+
+        <!-- Add Transaction Button -->
+        <button id="add-transaction" class="fab">+</button>
+
+        <!-- Add Transaction Modal -->
+        <div id="transaction-modal" class="modal">
+            <div class="modal-content">
+                <button id="close-modal" class="close-button">&times;</button>
+                <h2>Add Transaction</h2>
+                <form id="transaction-form">
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <select id="type" required>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-method">Payment Method</label>
+                        <select id="payment-method" required>
+                            <option value="Metrobank">Metrobank</option>
+                            <option value="GCash">GCash</option>
+                            <option value="PayPal">PayPal</option>
+                            <option value="Maya">Maya</option>
+                            <option value="Binance">Binance</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Debit Card">Debit Card</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <!-- Options will be dynamically populated based on the selected type -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="cancel-transaction">Cancel</button>
+                        <button type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <ul class="social-links">
+                    <li><a href="#" aria-label="Twitter">Twitter</a></li>
+                    <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                    <li><a href="#" aria-label="LinkedIn">LinkedIn</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <p>&copy; 2024 Finance Manager. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
