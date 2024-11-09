@@ -1,81 +1,8 @@
-// Sample data for September, October, and November
-let transactions = [
-    // September
-    {
-        id: 1,
-        date: '2024-09-15',
-        description: 'Freelance Project',
-        category: 'Web Development',
-        paymentMethod: 'PayPal',
-        amount: 2500,
-        type: 'income'
-    },
-    {
-        id: 2,
-        date: '2024-09-20',
-        description: 'Grocery Shopping',
-        category: 'Food',
-        paymentMethod: 'Credit Card',
-        amount: 150,
-        type: 'expense'
-    },
-    // October
-    {
-        id: 3,
-        date: '2024-10-05',
-        description: 'Monthly Salary',
-        category: 'Salary',
-        paymentMethod: 'Direct Deposit',
-        amount: 4000,
-        type: 'income'
-    },
-    {
-        id: 4,
-        date: '2024-10-10',
-        description: 'Rent Payment',
-        category: 'Housing',
-        paymentMethod: 'Bank Transfer',
-        amount: 1200,
-        type: 'expense'
-    },
-    // November
-    {
-        id: 5,
-        date: '2024-11-03',
-        description: 'Wisconsin Junk Cars',
-        category: 'Investments',
-        paymentMethod: 'Metrobank',
-        amount: 10000,
-        type: 'expense'
-    },
-    {
-        id: 6,
-        date: '2024-11-03',
-        description: 'ChatGPT',
-        category: 'Self-development',
-        paymentMethod: 'Cash',
-        amount: 1000,
-        type: 'expense'
-    },
-    {
-        id: 7,
-        date: '2024-11-03',
-        description: 'Web Development/JimTech Solutions',
-        category: 'Web Development',
-        paymentMethod: 'Metrobank',
-        amount: 50000,
-        type: 'income'
-    }
-];
+import { transactions, categoryOptions } from './data/transactions.js';
 
 let currentMonth = new Date();
 let currentFilter = 'all';
 let currentSearch = '';
-
-const categoryOptions = {
-    income: ['Salary', 'Freelance', 'Investments', 'Web Development', 'Other'],
-    expense: ['Food', 'Transportation', 'Housing', 'Utilities', 'Entertainment', 'Self-development', 'Investments', 'Other']
-};
 
 // Helper Functions
 
