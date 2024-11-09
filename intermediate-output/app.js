@@ -1,17 +1,21 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+//config.js is where the supabase url and anon key are stored, .env doesnt seem to work for vanillajs
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
 
+// Create a Supabase client instance
 const supabase = createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
 );
 
-
+// Category options for the dropdowns
 const categoryOptions = {
     income: ['Salary', 'Freelance', 'Investments', 'Web Development', 'Other'],
     expense: ['Food', 'Transportation', 'Housing', 'Utilities', 'Entertainment', 'Self-development', 'Investments', 'Other']
 }; 
 
+// Variables to store the current month, filter, and search term
 let currentMonth = new Date();
 let currentFilter = 'all';
 let currentSearch = '';
@@ -19,24 +23,32 @@ let transactions = []; // Will be populated from Supabase
 
 // Helper Functions
 
-//Formats a number as currency
+// Consolidate date formatting into a single utility object
+const dateUtils = {
+    formatFull: (dateString) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        }).format(date);
+    },
+    formatMonthYear: (date) => {
+        return new Intl.DateTimeFormat('en-US', { 
+            month: 'long', 
+            year: 'numeric' 
+        }).format(date);
+    }
+};
+
+// Simplify currency formatting by removing redundant replace
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 2
-    }).format(amount).replace('$', '$');
-};
-
-// Formats a date string into a human-readable format
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    }).format(date);
+    }).format(amount);
 };
 
 // Updates the total income, expenses, and balance display
@@ -112,7 +124,7 @@ const renderTransactions = () => {
             <div class="date-info">
                 <span class="date-number">${new Date(date).getDate()}</span>
                 <div class="date-details">
-                    <span class="day">${formatDate(date)}</span>
+                    <span class="day">${dateUtils.formatFull(date)}</span>
                 </div>
             </div>
             <div class="date-totals">
@@ -145,11 +157,7 @@ const renderTransactions = () => {
 
 // Updates the month display in the header
 const updateMonthDisplay = () => {
-    const monthYearString = new Intl.DateTimeFormat('en-US', { 
-        month: 'long', 
-        year: 'numeric' 
-    }).format(currentMonth);
-    document.getElementById('current-month').textContent = monthYearString;
+    document.getElementById('current-month').textContent = dateUtils.formatMonthYear(currentMonth);
 };
 
 // Populates the category dropdown based on the selected transaction type
@@ -169,9 +177,14 @@ const populateCategoryDropdown = () => {
 
 // Shows the modal
 const showModal = () => {
-    const modal = document.getElementById('transaction-modal');
-    modal.style.display = 'flex';
-    setTimeout(() => modal.classList.add('show'), 10);
+    try {
+        const modal = document.getElementById('transaction-modal');
+        if (!modal) throw new Error('Modal element not found');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10);
+    } catch (error) {
+        console.error('Error showing modal:', error);
+    }
 };
 
 // Hides the modal
@@ -226,6 +239,8 @@ document.getElementById('transaction-form').addEventListener('submit', async (e)
         transaction_type: document.getElementById('type').value
     };
 
+
+    // Insert the new transaction into the database with supabase
     const { error } = await supabase
         .from('transaction_alt')
         .insert([newTransaction]);
@@ -241,7 +256,10 @@ document.getElementById('transaction-form').addEventListener('submit', async (e)
 
 // Close modal when clicking outside
 document.getElementById('transaction-modal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('transaction-modal')) {
+    const modal = e.target;
+    const closeButtons = ['close-modal', 'cancel-transaction'];
+    
+    if (modal.id === 'transaction-modal' || closeButtons.includes(e.target.id)) {
         hideModal();
     }
 });
@@ -255,31 +273,10 @@ document.getElementById('search-input').addEventListener('input', (e) => {
 // Set default date to today
 document.getElementById('date').valueAsDate = new Date();
 
-// Initialize
-updateMonthDisplay();
-populateCategoryDropdown();
-renderTransactions();
-
-
-// For responsive navigation menu
-document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('show');
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
-            navLinks.classList.remove('show');
-        }
-    });
-});
 
 // Add function to fetch transactions
 const fetchTransactions = async () => {
+    // Fetch transactions from the database
     const { data, error } = await supabase
         .from('transaction_alt')
         .select('*');
@@ -295,7 +292,19 @@ const fetchTransactions = async () => {
 
 // Update the initialization section
 document.addEventListener('DOMContentLoaded', async () => {
-    // ... existing DOMContentLoaded code ...
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+            navLinks.classList.remove('show');
+        }
+    });
     
     // Initialize the app
     updateMonthDisplay();
