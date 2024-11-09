@@ -1,8 +1,21 @@
-import { transactions, categoryOptions } from './data/transactions.js';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
+
+const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+
+const categoryOptions = {
+    income: ['Salary', 'Freelance', 'Investments', 'Web Development', 'Other'],
+    expense: ['Food', 'Transportation', 'Housing', 'Utilities', 'Entertainment', 'Self-development', 'Investments', 'Other']
+}; 
 
 let currentMonth = new Date();
 let currentFilter = 'all';
 let currentSearch = '';
+let transactions = []; // Will be populated from Supabase
 
 // Helper Functions
 
@@ -29,11 +42,11 @@ const formatDate = (dateString) => {
 // Updates the total income, expenses, and balance display
 const updateTotals = (filteredTransactions) => {
     const income = filteredTransactions
-        .filter(t => t.type === 'income')
+        .filter(t => t.transaction_type === 'income')
         .reduce((sum, t) => sum + t.amount, 0);
     
     const expenses = filteredTransactions
-        .filter(t => t.type === 'expense')
+        .filter(t => t.transaction_type === 'expense')
         .reduce((sum, t) => sum + t.amount, 0);
     
     const total = income - expenses;
@@ -46,7 +59,7 @@ const updateTotals = (filteredTransactions) => {
 // Groups transactions by date
 const groupTransactionsByDate = (filteredTransactions) => {
     return filteredTransactions.reduce((groups, transaction) => {
-        const date = transaction.date;
+        const date = transaction.transaction_date;
         if (!groups[date]) {
             groups[date] = [];
         }
@@ -58,14 +71,14 @@ const groupTransactionsByDate = (filteredTransactions) => {
 // Filters transactions based on current month, filter, and search term
 const getFilteredTransactions = () => {
     return transactions.filter(transaction => {
-        const transactionDate = new Date(transaction.date);
+        const transactionDate = new Date(transaction.transaction_date);
         const matchesMonth = transactionDate.getMonth() === currentMonth.getMonth() &&
                              transactionDate.getFullYear() === currentMonth.getFullYear();
-        const matchesFilter = currentFilter === 'all' || transaction.type === currentFilter;
+        const matchesFilter = currentFilter === 'all' || transaction.transaction_type === currentFilter;
         const matchesSearch = currentSearch === '' ||
                               transaction.description.toLowerCase().includes(currentSearch.toLowerCase()) ||
                               transaction.category.toLowerCase().includes(currentSearch.toLowerCase()) ||
-                              transaction.paymentMethod.toLowerCase().includes(currentSearch.toLowerCase());
+                              transaction.payment_method.toLowerCase().includes(currentSearch.toLowerCase());
         return matchesMonth && matchesFilter && matchesSearch;
     });
 };
@@ -78,7 +91,7 @@ const renderTransactions = () => {
     const filteredTransactions = getFilteredTransactions();
 
     // Sort transactions by date in descending order
-    filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    filteredTransactions.sort((a, b) => new Date(b.transaction_date) - new Date(a.transaction_date));
 
     updateTotals(filteredTransactions);
 
@@ -86,11 +99,11 @@ const renderTransactions = () => {
 
     Object.entries(groupedTransactions).forEach(([date, dayTransactions]) => {
         const dateIncome = dayTransactions
-            .filter(t => t.type === 'income')
+            .filter(t => t.transaction_type === 'income')
             .reduce((sum, t) => sum + t.amount, 0);
         
         const dateExpenses = dayTransactions
-            .filter(t => t.type === 'expense')
+            .filter(t => t.transaction_type === 'expense')
             .reduce((sum, t) => sum + t.amount, 0);
 
         const dateHeader = document.createElement('div');
@@ -115,10 +128,10 @@ const renderTransactions = () => {
             element.innerHTML = `
                 <div class="transaction-header">
                     <span class="transaction-title">${transaction.description}</span>
-                    <span class="transaction-amount ${transaction.type}">${formatCurrency(transaction.amount)}</span>
+                    <span class="transaction-amount ${transaction.transaction_type}">${formatCurrency(transaction.amount)}</span>
                 </div>
                 <div class="transaction-details">
-                    ${transaction.category} • ${transaction.paymentMethod}
+                    ${transaction.category} • ${transaction.payment_method}
                 </div>
             `;
             transactionsList.appendChild(element);
@@ -201,21 +214,28 @@ document.getElementById('cancel-transaction').addEventListener('click', hideModa
 
 document.getElementById('type').addEventListener('change', populateCategoryDropdown);
 
-document.getElementById('transaction-form').addEventListener('submit', (e) => {
+document.getElementById('transaction-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const newTransaction = {
-        id: Date.now(),
-        date: document.getElementById('date').value,
+        transaction_date: document.getElementById('date').value,
         description: document.getElementById('description').value,
         category: document.getElementById('category').value,
-        paymentMethod: document.getElementById('payment-method').value,
+        payment_method: document.getElementById('payment-method').value,
         amount: parseFloat(document.getElementById('amount').value),
-        type: document.getElementById('type').value
+        transaction_type: document.getElementById('type').value
     };
 
-    transactions.push(newTransaction);
-    renderTransactions();
+    const { error } = await supabase
+        .from('transaction_alt')
+        .insert([newTransaction]);
+
+    if (error) {
+        console.error('Error inserting transaction:', error);
+        return;
+    }
+
+    await fetchTransactions(); // Refresh the transactions list
     hideModal();
 });
 
@@ -256,4 +276,29 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.classList.remove('show');
         }
     });
+});
+
+// Add function to fetch transactions
+const fetchTransactions = async () => {
+    const { data, error } = await supabase
+        .from('transaction_alt')
+        .select('*');
+    
+    if (error) {
+        console.error('Error fetching transactions:', error);
+        return;
+    }
+    
+    transactions = data;
+    renderTransactions();
+};
+
+// Update the initialization section
+document.addEventListener('DOMContentLoaded', async () => {
+    // ... existing DOMContentLoaded code ...
+    
+    // Initialize the app
+    updateMonthDisplay();
+    populateCategoryDropdown();
+    await fetchTransactions();
 });
